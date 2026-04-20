@@ -1,0 +1,41 @@
+{
+  "name": "loreduel",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "db:migrate": "node ./scripts/db-migrate.mjs",
+    "smoke:read": "node ./scripts/smoke-read.mjs",
+    "smoke:write": "node ./scripts/smoke-write.mjs"
+  },
+  "dependencies": {
+    "@google/stitch-sdk": "^0.1.0",
+    "framer-motion": "^12.38.0",
+    "genlayer-js": "^0.28.4",
+    "next": "^16.2.2",
+    "pg": "^8.16.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^24.12.2",
+    "@types/pg": "^8.15.6",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.2",
+    "jsdom": "^29.0.2",
+    "typescript": "~6.0.2",
+    "vitest": "^4.1.2"
+  }
+}

@@ -1,0 +1,12 @@
+export const portraits = {
+  player:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuCcuMcBWCQlrLafkIxhyPc_4KIpu_bWL3lCPn-umsH8pHNinlvP2lTkxc65hM0dzFZaz_qe6lcBUii-8YHk5SBR46J8kJA_mwgJxMC0z6SXfydrzPOTGpdvcx0OF-cU4J0xh6iiedtDb7yot8dUiOGLFNJABuVUdjw_U3meLIbhGw9mjjjBc4cc8rVGKXNGVF5xA21c09C0o5z29JRpTzmGU7euZ9juc2zhIQ5wDwvQissjLZwFvph9sYvv42BauRRPab2gaRG_Zet2',
+  'choir-knight':
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuCcuMcBWCQlrLafkIxhyPc_4KIpu_bWL3lCPn-umsH8pHNinlvP2lTkxc65hM0dzFZaz_qe6lcBUii-8YHk5SBR46J8kJA_mwgJxMC0z6SXfydrzPOTGpdvcx0OF-cU4J0xh6iiedtDb7yot8dUiOGLFNJABuVUdjw_U3meLIbhGw9mjjjBc4cc8rVGKXNGVF5xA21c09C0o5z29JRpTzmGU7euZ9juc2zhIQ5wDwvQissjLZwFvph9sYvv42BauRRPab2gaRG_Zet2',
+  'ember-prince':
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuDP8iX8PKHpDj_Mk6z0xDQMosFbWV8YWvN8Yq2S9iNKu4dFoVT5Avdm-okYFOQxQ8rbo_xn_MknecL1jJ05AXSfvdxkbFcnMi7fIG2P3FUhfepbruYSDzinZNIiVN8_2a09dl7XA8mKRBFhc8hLPgSdmFkTQtUEBOK48JaUR9TBcQLkjVfj9hyCowtsqyRZwZGZ5cobiDrmOMhxDln3vwuqRhcMpANmrHI-pl8U-ImU5m7lnAKaFSA23a4JJyi9JKjq-Ry8ziKQOO3q',
+  morgana:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuDP8iX8PKHpDj_Mk6z0xDQMosFbWV8YWvN8Yq2S9iNKu4dFoVT5Avdm-okYFOQxQ8rbo_xn_MknecL1jJ05AXSfvdxkbFcnMi7fIG2P3FUhfepbruYSDzinZNIiVN8_2a09dl7XA8mKRBFhc8hLPgSdmFkTQtUEBOK48JaUR9TBcQLkjVfj9hyCowtsqyRZwZGZ5cobiDrmOMhxDln3vwuqRhcMpANmrHI-pl8U-ImU5m7lnAKaFSA23a4JJyi9JKjq-Ry8ziKQOO3q',
+} as const
+
+export type SectionId = 'arena' | 'moves' | 'chronicle' | 'guide'

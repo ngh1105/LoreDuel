@@ -1,0 +1,90 @@
+@import '../src/styles/loreduel.css';
+
+:root {
+  --bg: #050813;
+  --panel: #0a101d;
+  --text: #edf3ff;
+  --muted: #a2aec4;
+  --border: rgba(234, 240, 255, 0.12);
+  --border-strong: rgba(234, 240, 255, 0.24);
+  --player: linear-gradient(90deg, #b9d7ff, #78b0ff);
+  --rival: linear-gradient(90deg, #ffcf9a, #ff7f50);
+  --accent: #f6c08a;
+  --moon: #78b0ff;
+  color-scheme: dark;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top, rgba(87, 131, 255, 0.12), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(255, 127, 80, 0.1), transparent 26%),
+    var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), sans-serif;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button,
+code {
+  border-radius: 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

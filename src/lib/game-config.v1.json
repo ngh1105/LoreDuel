@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "duelists": {
+    "player": {
+      "name": "Sable Vey",
+      "title": "Archivist of the Broken Moon",
+      "trait": "Wins by binding memory into law."
+    }
+  },
+  "scenes": [
+    {
+      "id": "velis-atrium",
+      "name": "Velis Atrium",
+      "detail": "A flooded opera floor mirrors every motion in fractured moon glass.",
+      "modifier": "Bulwark moves land harder while the chamber is calm.",
+      "favoredStance": "bulwark",
+      "tensionBase": 28
+    },
+    {
+      "id": "ash-balcony",
+      "name": "Ash Balcony",
+      "detail": "A suspended promenade where ember choirs distort every promise into spectacle.",
+      "modifier": "Trickster moves gain extra pressure when either side is shaken.",
+      "favoredStance": "trickster",
+      "tensionBase": 42
+    },
+    {
+      "id": "starless-well",
+      "name": "Starless Well",
+      "detail": "A vertical sanctum where eclipse rituals make every risk louder and more volatile.",
+      "modifier": "Eclipse moves spike when tension passes 60.",
+      "favoredStance": "eclipse",
+      "tensionBase": 54
+    }
+  ],
+  "enemyArchetypes": [
+    {
+      "id": "choir-knight",
+      "duelist": {
+        "name": "Sir Alistair",
+        "title": "Sun-Bound Guardian",
+        "trait": "Rewards learning the basics of stance and guard."
+      },
+      "description": "A tutorial rival who telegraphs direct force and guard windows.",
+      "preferredStances": ["bulwark", "bulwark", "trickster"],
+      "movePool": ["warding-verse", "iron-refrain", "mirror-feint"],
+      "openingStatus": "guarded"
+    },
+    {
+      "id": "ember-prince",
+      "duelist": {
+        "name": "Ilex Ra",
+        "title": "Prince of the Ember Choir",
+        "trait": "Pressures with counters and momentum swings."
+      },
+      "description": "Punishes predictable patterns and forces stance adaptation.",
+      "preferredStances": ["trickster", "trickster", "eclipse"],
+      "movePool": ["ember-decree", "choir-vein", "sunless-applause", "ghost-lattice"],
+      "openingStatus": "focused"
+    },
+    {
+      "id": "morgana",
+      "duelist": {
+        "name": "Morgana",
+        "title": "Whisperer of the Void",
+        "trait": "Stacks pressure, burns resolve, and turns long fights against you."
+      },
+      "description": "Boss archetype with status stacking and high-tension eclipse plays.",
+      "preferredStances": ["eclipse", "eclipse", "trickster"],
+      "movePool": ["sunless-applause", "void-suture", "ghost-lattice", "eclipse-refrain"],
+      "openingStatus": "focused"
+    }
+  ],
+  "moves": [
+    {
+      "id": "glass-oath",
+      "name": "Glass Oath",
+      "incantation": "Bind the arena to one undeniable truth.",
+      "summary": "Steady opening strike that counters trickster pressure.",
+      "stance": "bulwark",
+      "baseDamage": 3,
+      "counters": ["trickster"],
+      "appliesStatus": "guarded"
+    },
+    {
+      "id": "warding-verse",
+      "name": "Warding Verse",
+      "incantation": "Layer a measured hymn between yourself and harm.",
+      "summary": "Defensive line that clears burning and gains focus.",
+      "stance": "bulwark",
+      "baseDamage": 1,
+      "focusGain": 1,
+      "clearsStatus": "burning",
+      "appliesStatus": "guarded"
+    },
+    {
+      "id": "iron-refrain",
+      "name": "Iron Refrain",
+      "incantation": "Repeat the vow until panic cracks first.",
+      "summary": "Reliable follow-up that spikes when you are already guarded.",
+      "stance": "bulwark",
+      "baseDamage": 2,
+      "comboFrom": "guarded"
+    },
+    {
+      "id": "mirror-feint",
+      "name": "Mirror Feint",
+      "incantation": "Turn the rival legend against itself.",
+      "summary": "Applies shaken and punishes rigid bulwark setups.",
+      "stance": "trickster",
+      "baseDamage": 2,
+      "counters": ["bulwark"],
+      "appliesStatus": "shaken"
+    },
+    {
+      "id": "ghost-lattice",
+      "name": "Ghost Lattice",
+      "incantation": "Let the enemy walk into the shape of their own mistake.",
+      "summary": "Low damage control move that gains value after focus.",
+      "stance": "trickster",
+      "baseDamage": 1,
+      "comboFrom": "focused",
+      "appliesStatus": "shaken"
+    },
+    {
+      "id": "choir-vein",
+      "name": "Choir Vein",
+      "incantation": "Fracture the enemy cadence with a smiling lie.",
+      "summary": "Disruptive counter that clears guard before a bigger swing.",
+      "stance": "trickster",
+      "baseDamage": 2,
+      "clearsStatus": "guarded"
+    },
+    {
+      "id": "eclipse-refrain",
+      "name": "Eclipse Refrain",
+      "incantation": "Invoke the old sky and let the chamber choose.",
+      "summary": "High-risk eclipse play that thrives at high tension.",
+      "stance": "eclipse",
+      "baseDamage": 4,
+      "selfDamage": 1,
+      "counters": ["bulwark"],
+      "appliesStatus": "burning"
+    },
+    {
+      "id": "sunless-applause",
+      "name": "Sunless Applause",
+      "incantation": "Summon omen from the balcony shadows.",
+      "summary": "Boss-style pressure move that scales with burning targets.",
+      "stance": "eclipse",
+      "baseDamage": 3,
+      "appliesStatus": "burning"
+    },
+    {
+      "id": "void-suture",
+      "name": "Void Suture",
+      "incantation": "Stitch dread and focus into a single finishing thread.",
+      "summary": "Precision finisher that converts focus into heavy resolve damage.",
+      "stance": "eclipse",
+      "baseDamage": 2,
+      "focusGain": 1,
+      "comboFrom": "focused"
+    }
+  ],
+  "battleDefinitions": [
+    {
+      "id": "battle-1",
+      "label": "Battle 1",
+      "chapter": "Opening Trial",
+      "tutorialHint": "Start by learning stance advantage and the value of guarded turns.",
+      "sceneId": "velis-atrium",
+      "enemyId": "choir-knight"
+    },
+    {
+      "id": "battle-2",
+      "label": "Battle 2",
+      "chapter": "Choir Ambush",
+      "tutorialHint": "Watch for shaken and counter windows. Repeating the same move gets punished here.",
+      "sceneId": "ash-balcony",
+      "enemyId": "ember-prince"
+    },
+    {
+      "id": "battle-3",
+      "label": "Boss Battle",
+      "chapter": "Starless Verdict",
+      "tutorialHint": "Use focus and status timing carefully. The boss thrives if tension runs high for too long.",
+      "sceneId": "starless-well",
+      "enemyId": "morgana"
+    }
+  ],
+  "initialChronicle": {
+    "id": "round-0",
+    "battleId": "battle-1",
+    "battleLabel": "Prelude",
+    "round": 0,
+    "title": "The sanctum opens",
+    "summary": "Sable enters the sanctum with the archive sigil lit. The first battle will teach whether restraint or spectacle rules the chamber.",
+    "oracleLine": "The first claim will define what kind of truth this arena accepts.",
+    "sceneShift": "A flooded opera floor mirrors every motion in fractured moon glass.",
+    "mode": "mock"
+  }
+}

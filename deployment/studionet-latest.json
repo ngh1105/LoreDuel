@@ -1,0 +1,15 @@
+{
+  "network": "studionet",
+  "rpc": "https://studio.genlayer.com/api",
+  "deployedAt": "2026-04-07T04:22:44Z",
+  "account": "0xD12e272d9b464B5287c50307321c1bB1f6092517",
+  "contractAddress": "0xA60C0abdE259F7397EB5759641e21a298d6AA3ED",
+  "deployTxHash": "0x80d3efd4fbf38efe0f9d7d62d8d67d17b638d68c56fd32c157c1a9b3071a23d2",
+  "writeSmokeTxHash": "0xc015b64f0fa9d716a3136e33576bf5460eeccb97abc6573cefaf1debed1287ad",
+  "notes": [
+    "Deploy succeeded on GenLayer studionet for the structured verdict contract used by the Next.js vertical slice.",
+    "Read call get_last_verdict succeeded after deployment.",
+    "Contract now stores verdicts by submission_id so the frontend can read back the correct turn instead of a shared last_verdict only.",
+    "Contract uses run_nondet_unsafe with structured validation for winner, losses, tension, statuses, stance_delta, and tactical_reason."
+  ]
+}
