@@ -18,7 +18,7 @@
   "dependencies": {
     "@google/stitch-sdk": "^0.1.0",
     "framer-motion": "^12.38.0",
-    "genlayer-js": "^0.28.4",
+    "genlayer-js": "^1.1.8",
     "next": "^16.2.2",
     "pg": "^8.16.3",
     "react": "^19.2.4",

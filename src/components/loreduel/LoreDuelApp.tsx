@@ -38,7 +38,7 @@ export function LoreDuelApp() {
     hasLoaded,
   } = useGameInit()
 
-  const { wallet, walletError, isConnecting, networkName, handleConnectWallet, handleDisconnectWallet, clearWalletError } =
+  const { wallet, walletError, isConnecting, isSwitching, networkName, handleConnectWallet, handleDisconnectWallet, handleSwitchNetwork, clearWalletError } =
     useWallet({ hasLoaded, onStatusChange: setStatusNote })
 
   const battle = getSelectedBattle(runState)
@@ -119,13 +119,17 @@ export function LoreDuelApp() {
       <LandingPage
         wallet={wallet}
         isConnecting={isConnecting}
+        isSwitching={isSwitching}
         isOffline={isOffline}
         storageWarning={storageWarning}
         networkName={networkName}
+        walletError={walletError}
         battleMoves={battleMoves}
         onStartDemo={handleStartDemo}
         onConnectWallet={handleConnectWallet}
         onDisconnectWallet={handleDisconnectWallet}
+        onSwitchNetwork={handleSwitchNetwork}
+        onDismissWalletError={clearWalletError}
         onDismissStorageWarning={() => setStorageWarning(null)}
       />
     )
@@ -182,6 +186,12 @@ export function LoreDuelApp() {
       {walletError && (
         <div className="wallet-error-banner" role="alert">
           <span>{walletError}</span>
+          {wallet?.networkMismatch && !isSwitching && (
+            <button type="button" className="switch-network-button" onClick={handleSwitchNetwork}>
+              Switch to {networkName}
+            </button>
+          )}
+          {isSwitching && <span className="switching-indicator">Switching...</span>}
           <button type="button" className="reset-button" onClick={clearWalletError} aria-label="Dismiss error">X</button>
         </div>
       )}
@@ -484,26 +494,34 @@ export function LoreDuelApp() {
 type LandingPageProps = {
   wallet: ReturnType<typeof useWallet>['wallet']
   isConnecting: boolean
+  isSwitching: boolean
   isOffline: boolean
   storageWarning: string | null
   networkName: string
+  walletError: string | null
   battleMoves: typeof moves
   onStartDemo: () => void
   onConnectWallet: () => void
   onDisconnectWallet: () => void
+  onSwitchNetwork: () => void
+  onDismissWalletError: () => void
   onDismissStorageWarning: () => void
 }
 
 function LandingPage({
   wallet,
   isConnecting,
+  isSwitching,
   isOffline,
   storageWarning,
   networkName,
+  walletError,
   battleMoves,
   onStartDemo,
   onConnectWallet,
   onDisconnectWallet,
+  onSwitchNetwork,
+  onDismissWalletError,
   onDismissStorageWarning,
 }: LandingPageProps) {
   return (
@@ -536,6 +554,18 @@ function LandingPage({
 
       {isOffline && <OfflineBanner />}
       {storageWarning && <StorageWarningBanner message={storageWarning} onDismiss={onDismissStorageWarning} />}
+      {walletError && (
+        <div className="wallet-error-banner" role="alert">
+          <span>{walletError}</span>
+          {wallet?.networkMismatch && !isSwitching && (
+            <button type="button" className="switch-network-button" onClick={onSwitchNetwork}>
+              Switch to {networkName}
+            </button>
+          )}
+          {isSwitching && <span className="switching-indicator">Switching...</span>}
+          <button type="button" className="reset-button" onClick={onDismissWalletError} aria-label="Dismiss error">X</button>
+        </div>
+      )}
 
       <main className="landing-main">
         <section className="landing-hero" id="arena">

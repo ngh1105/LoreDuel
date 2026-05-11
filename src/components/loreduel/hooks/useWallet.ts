@@ -8,6 +8,7 @@ import {
   getNetworkName,
   isWalletChainSupported,
   subscribeToWalletEvents,
+  switchToNetwork,
   tryReconnectWallet,
   type WalletState,
 } from '../../../lib/genlayer'
@@ -21,9 +22,11 @@ export type WalletActions = {
   wallet: WalletState | null
   walletError: string | null
   isConnecting: boolean
+  isSwitching: boolean
   networkName: string
   handleConnectWallet: () => Promise<void>
   handleDisconnectWallet: () => void
+  handleSwitchNetwork: () => Promise<void>
   clearWalletError: () => void
 }
 
@@ -31,6 +34,7 @@ export function useWallet({ hasLoaded, onStatusChange }: UseWalletOptions): Wall
   const [wallet, setWallet] = useState<WalletState | null>(null)
   const [walletError, setWalletError] = useState<string | null>(null)
   const [isConnecting, setIsConnecting] = useState(false)
+  const [isSwitching, setIsSwitching] = useState(false)
   const networkName = useMemo(() => getNetworkName(), [])
 
   useEffect(() => {
@@ -93,8 +97,8 @@ export function useWallet({ hasLoaded, onStatusChange }: UseWalletOptions): Wall
       const nextWallet = await connectWallet()
       setWallet(nextWallet)
       if (nextWallet.networkMismatch) {
-        setWalletError(`Wallet is on the wrong network. Switch to ${networkName}.`)
-        onStatusChange(`Wrong wallet network detected. Switch to ${networkName} for live turns.`)
+        onStatusChange(`Wrong wallet network detected. Attempting to switch to ${networkName}...`)
+        await attemptSwitch()
       } else {
         onStatusChange('Wallet connected. Live turns are available.')
       }
@@ -105,6 +109,40 @@ export function useWallet({ hasLoaded, onStatusChange }: UseWalletOptions): Wall
       trackEvent({ type: 'wallet_connect_fail', error: msg })
     } finally {
       setIsConnecting(false)
+    }
+  }
+
+  async function handleSwitchNetwork() {
+    setIsSwitching(true)
+    try {
+      await attemptSwitch()
+    } finally {
+      setIsSwitching(false)
+    }
+  }
+
+  async function attemptSwitch() {
+    const provider = window.ethereum
+    if (!provider) return
+
+    setIsSwitching(true)
+    try {
+      const result = await switchToNetwork(provider)
+      if (result.success) {
+        const refreshedWallet = await tryReconnectWallet()
+        if (refreshedWallet) {
+          setWallet(refreshedWallet)
+        }
+        setWalletError(null)
+        onStatusChange(`Switched to ${networkName}. Live turns are available.`)
+      } else {
+        setWalletError(`Could not switch to ${networkName}: ${result.reason}`)
+        onStatusChange(`Network switch failed. ${result.reason ?? ''}`)
+      }
+    } catch {
+      setWalletError(`Unexpected error switching to ${networkName}.`)
+    } finally {
+      setIsSwitching(false)
     }
   }
 
@@ -119,9 +157,11 @@ export function useWallet({ hasLoaded, onStatusChange }: UseWalletOptions): Wall
     wallet,
     walletError,
     isConnecting,
+    isSwitching,
     networkName,
     handleConnectWallet,
     handleDisconnectWallet,
+    handleSwitchNetwork,
     clearWalletError: () => setWalletError(null),
   }
 }

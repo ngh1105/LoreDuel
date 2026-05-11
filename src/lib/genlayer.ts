@@ -78,6 +78,92 @@ const networkMap = {
   testnetBradbury,
 } as const
 
+export type SwitchResult = {
+  success: boolean
+  reason?: string
+}
+
+export async function switchToNetwork(provider: EthereumProvider): Promise<SwitchResult> {
+  const expectedChainId = getExpectedChainId()
+  if (expectedChainId === null) {
+    return { success: false, reason: 'Cannot determine expected network.' }
+  }
+
+  const hexChainId = `0x${expectedChainId.toString(16)}`
+
+  try {
+    await provider.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: hexChainId }],
+    })
+    return verifyActiveChain(provider, expectedChainId)
+  } catch (switchError) {
+    const err = switchError as Error & { code?: number }
+    if (err.code === 4902) {
+      try {
+        const chain = getExpectedChain()
+        const addParams = buildAddChainParams(chain, hexChainId)
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [addParams],
+        })
+        await provider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: hexChainId }],
+        })
+        return verifyActiveChain(provider, expectedChainId)
+      } catch {
+        return { success: false, reason: `Failed to add ${getNetworkName()} to wallet.` }
+      }
+    }
+    if (err.code === 4001) {
+      return { success: false, reason: 'User rejected the network switch.' }
+    }
+    return { success: false, reason: `Network switch failed: ${err.message}` }
+  }
+}
+
+function getExpectedChain() {
+  const networkName = (process.env.NEXT_PUBLIC_GENLAYER_NETWORK ||
+    'studionet') as keyof typeof networkMap
+  return networkMap[networkName] ?? studionet
+}
+
+async function verifyActiveChain(provider: EthereumProvider, expectedChainId: number): Promise<SwitchResult> {
+  const chainId = await requestChainId(provider)
+  if (chainId === expectedChainId) {
+    return { success: true }
+  }
+  return { success: false, reason: `Wallet is still on the wrong network after switching to ${getNetworkName()}.` }
+}
+
+function buildAddChainParams(chain: unknown, hexChainId: string): Record<string, unknown> {
+  const maybeChain = chain as {
+    blockExplorers?: { default?: { url?: string } }
+    nativeCurrency?: { name: string; symbol: string; decimals: number }
+    name?: string
+    rpc?: string[]
+    rpcUrls?: string[] | { default?: { http?: string[] } }
+  }
+  const rpcUrl = process.env.NEXT_PUBLIC_GENLAYER_RPC_URL
+  const chainRpcUrls = Array.isArray(maybeChain.rpcUrls)
+    ? maybeChain.rpcUrls
+    : maybeChain.rpcUrls?.default?.http
+  const explorerUrl = maybeChain.blockExplorers?.default?.url
+  const params: Record<string, unknown> = {
+    chainId: hexChainId,
+    chainName: maybeChain.name ?? getNetworkName(),
+    rpcUrls: rpcUrl ? [rpcUrl] : (chainRpcUrls ?? maybeChain.rpc ?? []),
+    nativeCurrency: maybeChain.nativeCurrency ?? { name: 'Token', symbol: 'TOK', decimals: 18 },
+  }
+
+  if (explorerUrl) {
+    params.blockExplorerUrls = [explorerUrl]
+  }
+
+  return params
+}
+
 export function readGenLayerStatus() {
   const rpcUrl = process.env.NEXT_PUBLIC_GENLAYER_RPC_URL
   const contractAddress = process.env.NEXT_PUBLIC_GENLAYER_CONTRACT_ADDRESS
@@ -355,8 +441,8 @@ function getLiveConfig() {
   const contractAddress = process.env
     .NEXT_PUBLIC_GENLAYER_CONTRACT_ADDRESS as `0x${string}` | undefined
   const networkName = (process.env.NEXT_PUBLIC_GENLAYER_NETWORK ||
-    'testnetBradbury') as keyof typeof networkMap
-  const chain = networkMap[networkName] ?? testnetBradbury
+    'studionet') as keyof typeof networkMap
+  const chain = networkMap[networkName] ?? studionet
 
   if (!rpcUrl || !contractAddress) {
     return {
@@ -417,8 +503,8 @@ function parseChainId(raw: string | number): number | null {
 
 function getExpectedChainId(): number | null {
   const networkName = (process.env.NEXT_PUBLIC_GENLAYER_NETWORK ||
-    'testnetBradbury') as keyof typeof networkMap
-  const chain = networkMap[networkName] ?? testnetBradbury
+    'studionet') as keyof typeof networkMap
+  const chain = networkMap[networkName] ?? studionet
   const maybeChain = chain as { id?: unknown }
   return typeof maybeChain.id === 'number' ? maybeChain.id : null
 }

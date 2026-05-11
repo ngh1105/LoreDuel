@@ -193,6 +193,27 @@
   margin-top: 0;
 }
 
+.switch-network-button {
+  background: rgba(255, 180, 171, 0.15);
+  border: 1px solid rgba(255, 180, 171, 0.4);
+  color: #ffb4ab;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.switch-network-button:hover {
+  background: rgba(255, 180, 171, 0.25);
+}
+
+.switching-indicator {
+  font-style: italic;
+  opacity: 0.7;
+  margin-left: 0.5rem;
+}
+
 .landing-main,
 .battlefield {
   width: min(1300px, calc(100% - 1.2rem));
